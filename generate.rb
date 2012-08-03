@@ -1,36 +1,7 @@
 require 'yaml'
 require 'pp'
-
-###########################
-
-class MetaDataObject
-	attr_accessor :set_name, :attrs, :fields
-
-	def initialize
-		self.fields = []
-	end
-end
-
-###########################
-
-class DataGenerator
-	def self.generateValue(attrs)
-		case attrs['type']
-		when 'string'
-			self.generateString attrs
-		else
-			return nil
-		end
-	end
-
-	def self.generateString(*args)
-		args = args[0]
-		max_length = (args.include?('max_length') && args['max_length'].is_a?(Integer)) ? args['max_length'] : 32
-		pp max_length
-	end
-end
-
-###########################
+require_relative 'MetaDataObject'
+require_relative 'DataGenerator'
 
 config = YAML.load_file('config.yml')
 
@@ -66,6 +37,6 @@ meta_data_objects.each { |mdo|
 	end
 }
 
-#pp data
+pp data
 
 
