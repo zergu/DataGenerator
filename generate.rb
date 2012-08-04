@@ -12,6 +12,8 @@ end
 meta_data_objects = []
 data = {}
 
+# Read meta-data
+i = 0
 config['sets'].each { |set|
 	mdo				= MetaDataObject.new
 	mdo.set_name	= set[0]
@@ -23,20 +25,45 @@ config['sets'].each { |set|
 		end
 	}
 
-	meta_data_objects << mdo
+	meta_data_objects[i] = mdo
+	i += 1
 }
 
+# Build an array with rows representing desired data
 meta_data_objects.each { |mdo|
 	data[mdo.set_name] = []
 	for i in 0..mdo.attrs["count"]
+		row = []
 		mdo.fields.each { |field|
 			field.each_pair { |field_name, field_attrs|
-				data[mdo.set_name] << { field_name => DataGenerator.generate_value(field_attrs) }
+				row.push DataGenerator.generate_value(field_attrs)
 			}
 		}
+		data[mdo.set_name].push row
 	end
 }
 
-pp data
+# Write data to SQL format
+sql = ''
+meta_data_objects.each { |mdo|
+	sql += 'INSERT INTO ' + mdo.set_name + '(' + mdo.field_names.join(', ') + ') VALUES ' + "\n"
+	data[mdo.set_name].each { |row|
+		sql += "\t("
+		values = []
+		row.each { |value|
+			value = value.strftime('%Y-%m-%d') if value.instance_of? DateTime
+			value = value.to_s if value.instance_of? Date
+			value = value.to_s if value.instance_of? Fixnum
+			values << "'" + value + "'"
+		}
+		sql += values.join(', ') + "),\n"
+	}
+
+	# Replace comma after last row with ending semicolon
+	sql[-2] = ';'
+	sql += "\n\n"
+}
+
+puts sql
 
 
