@@ -10,12 +10,20 @@ class DataGenerator
 		case attrs['type']
 			when 'string'
 				self.generate_string attrs
+			when 'number'
+				self.generate_number attrs
 			when 'date'
 				self.generate_date attrs
 			when 'pesel'
 				self.generate_pesel attrs
+			when 'text'
+				self.generate_text attrs
 			when 'entity'
 				self.load_entity attrs
+			when 'fixed'
+				attrs['value']
+			when 'code'
+				eval attrs['code']
 			else
 				return nil
 		end
@@ -27,11 +35,21 @@ class DataGenerator
 		self.random_string(min_length, max_length)
 	end
 
+	def self.generate_number args
+		min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 1
+		max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 999
+		min + rand(1 + max - min)
+	end
+
 	def self.generate_date args
 		# TODO handle date range
 		#min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 32
 		#max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 32
 		self.random_date
+	end
+
+	def self.generate_text args
+		'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nunc leo augue, ultricies quis tristique vitae, fringilla non mi. Nullam vel mi leo, vitae lobortis neque. Nulla facilisi. Phasellus at dolor non metus feugiat cursus. In vel est sapien, nec sollicitudin eros. Nunc ornare, turpis venenatis viverra pretium, arcu sem aliquam est, non convallis metus velit eu tellus. Maecenas feugiat feugiat ullamcorper. Sed vel erat non arcu pharetra consectetur vitae at ante. Pellentesque non enim tortor. Nulla luctus pulvinar leo, varius placerat purus commodo in. Nulla sit amet magna eget tellus facilisis condimentum sit amet id tortor. Morbi viverra eros ut elit tristique convallis. Nunc quis lorem ut risus consectetur eleifend.'
 	end
 
 	def self.generate_pesel args

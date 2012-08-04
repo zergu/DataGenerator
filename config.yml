@@ -8,9 +8,9 @@ sets:
         pesel: { type: pesel }
         country: { type: entity, from: countries_pl }
         sex: { type: fixed, value: m }
-        created_at: { type: ruby, code: 'DateTime.now()' }
+        created_at: { type: code, code: 'DateTime.now()' }
     visits:
         _attributes: { count: 8 }
-        patient_id: { type: number, min: 1, max: 100 }
+        patient_id: { type: number, min: 2, max: 5 }
         description: { type: text }
 
