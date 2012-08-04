@@ -31,7 +31,7 @@ meta_data_objects.each { |mdo|
 	for i in 0..mdo.attrs["count"]
 		mdo.fields.each { |field|
 			field.each_pair { |field_name, field_attrs|
-				data[mdo.set_name] << { field_name => DataGenerator.generateValue(field_attrs) }
+				data[mdo.set_name] << { field_name => DataGenerator.generate_value(field_attrs) }
 			}
 		}
 	end
