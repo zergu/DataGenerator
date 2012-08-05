@@ -1,8 +1,9 @@
 class MetaDataObject
-	attr_accessor :set_name, :attrs, :fields
+	attr_accessor :set_name, :attrs, :fields, :index_map
 
 	def initialize
 		self.fields = []
+		self.index_map = {}
 	end
 
 	def field_names

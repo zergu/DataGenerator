@@ -1,4 +1,4 @@
-class DataGenerator
+module DataGenerator
 
 	ENTITIES_DIR = 'data'
 
@@ -53,15 +53,24 @@ class DataGenerator
 	end
 
 	def self.generate_pesel args
-		self.random_pesel
+		if args.include? 'fields_as_args'
+			self.send :random_pesel, *args['args']
+		else
+			self.random_pesel
+		end
 	end
 
 	# Loads a single value from specified data source (file)
 	def self.load_entity args
+
+		if not args.include? 'from'
+			raise 'Entity type need a "from" attribute'
+		end
+
 		file_path = self::ENTITIES_DIR + File::SEPARATOR + args['from']
 
 		if File.exists? file_path
-			entities = IO.read(file_path).split
+			entities = IO.read(file_path).split("\n")
 		else
 			raise 'Could not find entities file: ' + file_path
 		end
@@ -81,9 +90,10 @@ class DataGenerator
 		Date.parse(self.random_time.to_s)
 	end
 
-	def self.random_pesel
+	def self.random_pesel date = nil
 		sex_letters = 'mf'
-		self.calculate_pesel self.random_date, sex_letters[rand(2)]
+		date = self.random_date if date === nil
+		self.calculate_pesel date, sex_letters[rand(2)]
 	end
 
 	# Calculates polish identification number - PESEL - using birth date and sex
@@ -92,47 +102,47 @@ class DataGenerator
 		male_digits		= '13579'
 		female_digits	= '02468'
 
-	    full_year = date.year
+		full_year = date.year
 
 		y = full_year % 100;
 		m = date.month
 		d = date.day
 
 		if full_year >= 1800 && full_year <= 1899
-		    m += 80
+			m += 80
 		elsif full_year >= 2000 && full_year <= 2099
-		    m += 20
+			m += 20
 		elsif full_year >= 2100 && full_year <= 2199
-		    m += 40
+			m += 40
 		elsif full_year >= 2200 && full_year <= 2299
-		    m += 60
+		 	m += 60
 		end
 
 		digits = [ (y/10).floor, y % 10, (m/10).floor, m % 10, (d/10).floor, d % 10 ]
 
 		for i in digits.length..(weights.length - 1)
-		    digits[i] = rand(10)
+			digits[i] = rand(10)
 		end
 
 		if sex == 'm'
-		    digits[weights.length - 1] = male_digits[rand(5)].to_i
+			digits[weights.length - 1] = male_digits[rand(5)].to_i
 		elsif sex == 'f'
-		    digits[weights.length - 1] = female_digits[rand(5)].to_i
+			digits[weights.length - 1] = female_digits[rand(5)].to_i
 		else
-		    digits[weights.length - 1] = rand(10);
+			digits[weights.length - 1] = rand(10);
 		end
 
 		control_digit = 0
 
 		for i in 0..(digits.length - 1)
-		    control_digit += weights[i] * digits[i]
+			control_digit += weights[i] * digits[i]
 		end
 
 		control_digit = (10 - (control_digit % 10)) % 10
 
-		r = '';
+		r = ''
 		for i in 0..(digits.length - 1)
-		    r += digits[i].to_s
+			r += digits[i].to_s
 		end
 
 		r += control_digit.to_s
