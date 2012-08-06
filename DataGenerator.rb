@@ -18,6 +18,8 @@ module DataGenerator
 				self.generate_pesel attrs
 			when 'text'
 				self.generate_text attrs
+			when 'pl_postal_code'
+				self.generate_pl_postal_code attrs
 			when 'entity'
 				self.load_entity attrs
 			when 'fixed'
@@ -60,6 +62,11 @@ module DataGenerator
 		end
 	end
 
+	def self.generate_pl_postal_code args
+		chars = '0123456789'
+		chars[rand(chars.size)] + chars[rand(chars.size)] + '-' + chars[rand(chars.size)] + chars[rand(chars.size)] + chars[rand(chars.size)]
+	end
+
 	# Loads a single value from specified data source (file)
 	def self.load_entity args
 
@@ -75,7 +82,13 @@ module DataGenerator
 			raise 'Could not find entities file: ' + file_path
 		end
 
-		entities[rand(entities.length)]
+		if args.include? 'suffix'
+			suffix = self.generate_value args['suffix']
+			entities[rand(entities.length)] + suffix.to_s
+		else
+			entities[rand(entities.length)]
+		end
+
 	end
 
 	def self.random_string min_length, max_length

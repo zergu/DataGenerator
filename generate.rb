@@ -108,8 +108,12 @@ meta_data_objects.each { |mdo|
 			if value.instance_of? Fixnum
 				values << value
 			else
-				# FIXME problem with \ as a last character
-				values << "'" + value + "'"
+				begin
+					# FIXME problem with \ as a last character
+					values << "'" + value + "'"
+				rescue TypeError
+					puts "Can't convert value to string: " + value.inspect
+				end
 			end
 		}
 		sql += values.join(', ') + "),\n"
