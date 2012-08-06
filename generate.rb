@@ -119,6 +119,6 @@ meta_data_objects.each { |mdo|
 	sql[-2] = ';'
 	sql += "\n\n"
 
-	File.open(, 'w+') { |f| f.write(sql) }
+	File.open(output_file, 'w+') { |f| f.write(sql) }
 }
 
