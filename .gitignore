@@ -1,2 +1,5 @@
 *.swp
 generated-data.sql
+gen
+config_med.sql
+

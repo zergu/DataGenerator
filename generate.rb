@@ -1,11 +1,39 @@
-# TODO
+#!/usr/bin/env ruby
 
 require 'yaml'
-require 'pp'
+require 'optparse'
 require_relative 'MetaDataObject'
 require_relative 'DataGenerator'
 
-config = YAML.load_file('config.yml')
+options = {}
+
+optparse = OptionParser.new do |opts|
+	# Set a banner, displayed at the top
+	# of the help screen.
+	opts.banner = "Usage: genrate.rb [options]"
+
+	# Define the options, and what they do
+
+	options[:output_file] = nil
+	opts.on( '-f', '--file', 'Use different output file than ./generated-data.sql' ) do |file|
+		options[:output_file] = file
+	end
+
+	options[:config_file] = nil
+	opts.on( '-c', '--config FILE', 'Use different config file than ./config.yml' ) do |file|
+		options[:config_file] = file
+	end
+
+	# This displays the help screen, all programs are
+	# assumed to have this option.
+	opts.on( '-h', '--help', 'Display this screen' ) do
+		puts opts
+		exit
+	end
+end.parse!
+
+config = YAML.load_file(options[:config_file] || 'config.yml')
+output_file = options[:output_file] || 'generated-data.sql'
 
 if config['format'] != 'sql'
 	raise "Other formats than 'sql' not yet supported"
@@ -91,6 +119,6 @@ meta_data_objects.each { |mdo|
 	sql[-2] = ';'
 	sql += "\n\n"
 
-	File.open('generated-data.sql', 'w+') { |f| f.write(sql) }
+	File.open(, 'w+') { |f| f.write(sql) }
 }
 

@@ -1,6 +1,6 @@
 format: sql
 sets:
-    medic_patients:
+    patients:
         _attributes: { count: 200 }
         application_id: { type: fixed, value: 3 }
         name1: { type: entity, from: first_names_pl }
@@ -11,7 +11,7 @@ sets:
         gender_id: { type: number, min: 1, max: 2 }
         active: { type: fixed, value: true }
         created_at: { type: code, code: 'DateTime.now()' }
-    medic_visits:
+    visits:
         _attributes: { count: 1 }
         patient_id: { type: number, min: 2, max: 5 }
         description: { type: text }
