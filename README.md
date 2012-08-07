@@ -6,9 +6,15 @@ Generates ready for insertion SQL file with various (calculated or randomized) d
 How to use it?
 --------------
 
-1. Download source code
-2. Open `config.yml` and adjust it to your own needs
-3. Run `ruby generate.rb`
+1. Download source code.
+2. Open `config.yml` and adjust it to your own needs.
+3. Run `ruby generate.rb`.
+4. Insert generated SQL file into your database. :-)
+
+Known issues
+------------
+
+As of early August 2012 project is in very early stage so expect all kind of problems. Sorry.
 
 Example config file (YAML)
 --------------------------
@@ -45,13 +51,23 @@ Supported field types: generic
 	Optional: **max** (default: 999)  
 	Random number from *min* — *max* range.
 
-*	entity
+*	**date**
+
+	Random date.
+
+*	**entity**
 
 	Required: **from**  
 	Loads a random value from dictionary specified in *from* attribute. Check dictionaries
 	in *data/* dir.
 
-*	code
+*	**lorem**
+
+	Optional: min_sentences (default: 1)  
+	Optional: max_sentences (default: 20)  
+	Generates pseudo-text with random number of sentences from famous *Lorem Ipsum*.
+
+*	**code**
 
 	Required: **code**  
 	Value is generated with specified Ruby code.
@@ -61,9 +77,14 @@ Supported field types: specific
 
 *	**pesel**
 
-	Optional: **fields_as_args**  
+	Optional: Array **fields_as_args**  
 	Method arguments: date = nil, sex = nil  
 	Generates Polish person's identification number using specific algorithm. Can be random
-	but should depend on someone's birth date because it's used in calculations. Attribute
+	but should depend on someone's birth date and sex used in calculations. Attribute
 	*fields_as_args* allows using values generated for other fields but they should be placed
 	before current field.
+
+*	**pl_postal_code**
+
+	Random polish postal code matching XX-XXX, where X is a number between 0 and 9.
+
