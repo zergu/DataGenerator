@@ -115,10 +115,11 @@ module DataGenerator
 		Date.parse(self.random_time.to_s)
 	end
 
-	def self.random_pesel date = nil
+	def self.random_pesel date = nil, sex = nil
 		sex_letters = 'mf'
-		date = self.random_date if date === nil
-		self.calculate_pesel date, sex_letters[rand(2)]
+		date	= self.random_date if date === nil
+		sex		= sex_letters[rand(2)] if sex === nil
+		self.calculate_pesel date, sex
 	end
 
 	# Calculates polish identification number - PESEL - using birth date and sex
