@@ -36,24 +36,24 @@ Supported field types: generic
 
 *	**fixed**
 
-	Required: **value**
+	Required: **value**  
 	Simply set this field to *value*.
 
 *	**number**
 
-	Optional: **min** (default: 1)
-	Optional: **max** (default: 999)
+	Optional: **min** (default: 1)  
+	Optional: **max** (default: 999)  
 	Random number from *min* — *max* range.
 
 *	entity
 
-	Required: **from**
-	Loads a random value from dictionary specified in `from` attribute. Check dictionaries
-	in `data/` dir.
+	Required: **from**  
+	Loads a random value from dictionary specified in *from* attribute. Check dictionaries
+	in *data/* dir.
 
 *	code
 
-	Required: **code**
+	Required: **code**  
 	Value is generated with specified Ruby code.
 
 Supported field types: specific
@@ -61,9 +61,9 @@ Supported field types: specific
 
 *	**pesel**
 
-	Optional: **fields_as_args**
-	Method arguments: date = nil, sex = nil
+	Optional: **fields_as_args**  
+	Method arguments: date = nil, sex = nil  
 	Generates Polish person's identification number using specific algorithm. Can be random
 	but should depend on someone's birth date because it's used in calculations. Attribute
-	`fields_as_args` allows using values generated for other fields but they should be placed
+	*fields_as_args* allows using values generated for other fields but they should be placed
 	before current field.
