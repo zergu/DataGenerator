@@ -97,6 +97,7 @@ meta_data_objects.each { |mdo|
 		values = []
 		row.each { |value|
 			value = value.strftime('%Y-%m-%d %H:%M:%S') if value.instance_of? DateTime
+			value = value.strftime('%Y-%m-%d %H:%M:%S') if value.instance_of? Time
 			value = value.to_s if value.instance_of? Date
 
 			if value === true

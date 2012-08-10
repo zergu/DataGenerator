@@ -95,8 +95,14 @@ Supported field types: specific
 
 *	**phone_number**
 
-	Optional: **null_density** (0..1)
+	Optional: **null_density** (0..1)  
 	Generates random phone number matching pattern XXX-XXX-XXX, where X = 0..9.
+
+*	**email**
+
+	Optional: **null_density** (0..1)
+	Generates random email matching pattern X@X.TLD, where X = where X is random string (3…10 chars)
+	and TLD is one of few top-level domains.
 
 *	**pl_postal_code**
 

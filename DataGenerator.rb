@@ -14,6 +14,8 @@ module DataGenerator
 				self.generate_number attrs
 			when 'date'
 				self.generate_date attrs
+			when 'datetime'
+				self.generate_time attrs
 			when 'pesel'
 				self.generate_pesel attrs
 			when 'text'
@@ -71,6 +73,18 @@ module DataGenerator
 		#min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 32
 		#max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 32
 		self.random_date
+	end
+
+	def self.generate_time args
+		if args.include? 'null_density'
+			if rand <= args['null_density']
+				return nil
+			end
+		end
+		# TODO handle date range
+		#min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 32
+		#max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 32
+		self.random_time
 	end
 
 	def self.generate_text args
