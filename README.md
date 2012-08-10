@@ -69,9 +69,9 @@ Supported field types: generic
 
 *	**distributed**
 
-	Required: values (Array of Arrays)
-	Randomizes fixed values using their weights. Example values can look like this:
-	[ ['ruby', 0.2], ['php', 0.4], ['python', 0.25], ['c++', 0.14], ['java', 0.01] ]
+	Required: values (Array of Arrays)  
+	Randomizes fixed values using their weights. Example values can look like this:  
+	`[ ['ruby', 0.2], ['php', 0.4], ['python', 0.25], ['c++', 0.14], ['java', 0.01] ]`
 	Meaning that you have 20% chance to get 'ruby' value, 40% for PHP and so on. This
 	does not guarantee that exaclty 20% of values will be 'ruby' because they are
 	randoized independanty. Keep in mind that weights have to sum up to 1.
@@ -96,11 +96,11 @@ Supported field types: specific
 *	**phone_number**
 
 	Optional: **null_density** (0..1)
-	Generates random phone number matching pattern NNN-NNN-NNN, where N = 0..9.
+	Generates random phone number matching pattern XXX-XXX-XXX, where X = 0..9.
 
 *	**pl_postal_code**
 
-	Random polish postal code matching XX-XXX, where X is a number between 0 and 9.
+	Random polish postal code matching XX-XXX, where X = 0..9.
 
 Imagining the future
 --------------------
