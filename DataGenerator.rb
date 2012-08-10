@@ -24,6 +24,8 @@ module DataGenerator
 				self.generate_lorem attrs
 			when 'phone_number'
 				self.generate_phone_number attrs
+			when 'email'
+				self.generate_email attrs
 			when 'distributed'
 				self.generate_distributed_values attrs
 			when 'entity'
@@ -102,7 +104,26 @@ module DataGenerator
 			end
 		end
 
-		rand(10 ** 9).to_s.scan(/.../).join('-')
+		rand(100_000_000...999_999_999).to_s.scan(/.../).join('-')
+	end
+
+	def self.generate_email args
+		if args.include? 'null_density'
+			if rand <= args['null_density']
+				return nil
+			end
+		end
+
+		tlds = ['com', 'org', 'net', 'biz', 'co.uk', 'pl', 'it', 'jp', 'tv', 'us', 'au' ]
+		letters = ('a'..'z').to_a
+
+		name	= []
+		domain	= []
+
+		rand(3..10).times { name << letters.sample }
+		rand(3..10).times { domain << letters.sample }
+
+		name.join + '@' + domain.join + '.' + tlds.sample
 	end
 
 	def self.generate_pesel args

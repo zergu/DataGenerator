@@ -72,9 +72,9 @@ Supported field types: generic
 	Required: values (Array of Arrays)  
 	Randomizes fixed values using their weights. Example values can look like this:  
 	`[ ['ruby', 0.2], ['php', 0.4], ['python', 0.25], ['c++', 0.14], ['java', 0.01] ]`
-	Meaning that you have 20% chance to get 'ruby' value, 40% for PHP and so on. This
+	Meaning that you have 20% chance to get 'ruby' value, 40% for 'php' and so on. This
 	does not guarantee that exaclty 20% of values will be 'ruby' because they are
-	randoized independanty. Keep in mind that weights have to sum up to 1.
+	randoized independantly. Keep in mind that weights have to sum up to 1.
 
 *	**code**
 
