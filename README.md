@@ -80,11 +80,22 @@ Supported field types: specific
 	Optional: Array **fields_as_args**  
 	Method arguments: date = nil, sex = nil  
 	Generates Polish person's identification number using specific algorithm. Can be random
-	but should depend on someone's birth date and sex used in calculations. Attribute
-	*fields_as_args* allows using values generated for other fields but they should be placed
+	but should depend on someone's birth date and sex cause they're required for proper calculations.
+	Attribute *fields_as_args* allows using values generated for other fields but they should be placed
 	before current field.
 
 *	**pl_postal_code**
 
 	Random polish postal code matching XX-XXX, where X is a number between 0 and 9.
+
+Imagining the future
+--------------------
+
+* Writing also to CSV.
+* Support for auto-increment fields and SQL COPY format.
+* More specific generators.
+* Much more dictionaries.
+* Constant code refactorization (to improve my Ruby skills).
+* Code unit tested.
+* All issues closed.
 

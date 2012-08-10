@@ -107,6 +107,8 @@ meta_data_objects.each { |mdo|
 
 			if value.instance_of? Fixnum
 				values << value
+			elsif value === nil
+				values << 'NULL'
 			else
 				begin
 					# FIXME problem with \ as a last character
