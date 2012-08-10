@@ -2,8 +2,8 @@
 
 require 'yaml'
 require 'optparse'
-require_relative 'MetaDataObject'
-require_relative 'DataGenerator'
+require_relative 'lib/MetaDataObject'
+require_relative 'lib/DataGenerator'
 
 options = {}
 
