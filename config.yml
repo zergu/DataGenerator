@@ -1,18 +1,18 @@
 format: sql
 sets:
     patients:
-        _attributes: { count: 200 }
+        _attributes: { count: 40 }
+        last_activity: { type: datetime, min: '2000-01-01 00:00:00', max: '2011-12-31 23:59:59', null_density: 0.1 }
         application_id: { type: fixed, value: 3 }
-        name1: { type: entity, from: first_names_pl }
-        lastname1: { type: entity, from: last_names_pl }
+        firstname: { type: entity, from: first_names_pl }
+        lastname: { type: entity, from: last_names_pl }
         birthday_at: { type: date, min: 1900-01-01, max: 2006-12-31 }
         pesel: { type: pesel, fields_as_args: [birthday_at] }
-#       country: { type: entity, from: countries_pl }
-        gender_id: { type: number, min: 1, max: 2 }
+        country: { type: entity, from: countries_pl }
         active: { type: fixed, value: true }
         created_at: { type: code, code: 'DateTime.now()' }
     visits:
-        _attributes: { count: 1 }
+        _attributes: { count: 20 }
         patient_id: { type: number, min: 2, max: 5 }
         description: { type: text }
 

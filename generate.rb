@@ -5,6 +5,10 @@ require 'optparse'
 require_relative 'lib/MetaDataObject'
 require_relative 'lib/DataGenerator'
 
+###
+### Parse command line options
+###
+
 options = {}
 
 optparse = OptionParser.new do |opts|
@@ -15,7 +19,7 @@ optparse = OptionParser.new do |opts|
 	# Define the options, and what they do
 
 	options[:output_file] = nil
-	opts.on( '-f', '--file', 'Use different output file than ./generated-data.sql' ) do |file|
+	opts.on( '-f', '--file FILE', 'Use different output file than ./generated-data.sql' ) do |file|
 		options[:output_file] = file
 	end
 
@@ -32,17 +36,23 @@ optparse = OptionParser.new do |opts|
 	end
 end.parse!
 
+###
+### Initial setup and load config file
+###
+
 config = YAML.load_file(options[:config_file] || 'config.yml')
 output_file = options[:output_file] || 'generated-data.sql'
+meta_data_objects = []
+data = {}
 
 if config['format'] != 'sql'
 	raise "Other formats than 'sql' not yet supported"
 end
 
-meta_data_objects = []
-data = {}
+###
+### Read meta-data from parsed config
+###
 
-# Read meta-data
 i = 0
 config['sets'].each { |set|
 	mdo				= MetaDataObject.new
@@ -62,7 +72,10 @@ config['sets'].each { |set|
 	i += 1
 }
 
-# Build an array with rows representing desired data
+###
+### Build an array with rows representing desired generated/randomizde data
+###
+
 meta_data_objects.each { |mdo|
 	data[mdo.set_name] = []
 
@@ -88,7 +101,10 @@ meta_data_objects.each { |mdo|
 	end
 }
 
-# Write data to file in (Postgre)SQL format
+###
+### Write data to file in (Postgre)SQL format
+###
+
 sql = ''
 meta_data_objects.each { |mdo|
 	sql += 'INSERT INTO ' + mdo.set_name + '(' + mdo.field_names.join(', ') + ') VALUES ' + "\n"

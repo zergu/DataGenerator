@@ -4,8 +4,7 @@ module DataGenerator
 
 	# Dispatcher. Based on given attributes form config file invokes specific
 	# generator or loader.
-	#
-	# TODO Read attrs here so generators will be more reusable?
+
 	def self.generate_value(attrs)
 		case attrs['type']
 			when 'string'
@@ -15,7 +14,7 @@ module DataGenerator
 			when 'date'
 				self.generate_date attrs
 			when 'datetime'
-				self.generate_time attrs
+				self.generate_datetime attrs
 			when 'pesel'
 				self.generate_pesel attrs
 			when 'text'
@@ -75,16 +74,30 @@ module DataGenerator
 		self.random_date
 	end
 
-	def self.generate_time args
+	def self.generate_datetime args
 		if args.include? 'null_density'
 			if rand <= args['null_density']
 				return nil
 			end
 		end
-		# TODO handle date range
-		#min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 32
-		#max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 32
-		self.random_time
+
+		if args.include? 'min'
+			begin
+				min = DateTime.parse(args['min']).to_time
+			rescue
+				min = Time.new(1950,1,1,0,0,0)
+			end
+		end
+
+		if args.include? 'max'
+			begin
+				max = DateTime.parse(args['max']).to_time
+			rescue
+				max = Time.new(2009,12,31,23,59,59)
+			end
+		end
+
+		self.random_time min, max
 	end
 
 	def self.generate_text args
@@ -217,8 +230,8 @@ module DataGenerator
 		(min_length...max_length).map{65.+(rand(57)).chr}.join
 	end
 
-	def self.random_time from = 0.0, to = Time.now
-		Time.at(from + rand * (to.to_f - from.to_f))
+	def self.random_time min = 0.0, max = Time.now
+		Time.at(min + rand * (max.to_f - min.to_f))
 	end
 
 	def self.random_date from = 0.0, to = Time.now
