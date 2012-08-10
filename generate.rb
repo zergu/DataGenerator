@@ -14,10 +14,9 @@ options = {}
 optparse = OptionParser.new do |opts|
 	# Set a banner, displayed at the top
 	# of the help screen.
-	opts.banner = "Usage: genrate.rb [options]"
+	opts.banner = "Usage: ruby generate.rb [options]"
 
 	# Define the options, and what they do
-
 	options[:output_file] = nil
 	opts.on( '-f', '--file FILE', 'Use different output file than ./generated-data.sql' ) do |file|
 		options[:output_file] = file

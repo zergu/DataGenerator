@@ -68,10 +68,28 @@ module DataGenerator
 				return nil
 			end
 		end
-		# TODO handle date range
-		#min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 32
-		#max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 32
-		self.random_date
+
+		if args.include? 'min'
+			begin
+				min = Date.parse(args['min'])
+			rescue
+				min = Date.new(1950,1,1)
+			end
+		else
+			min = Date.new(1950,1,1)
+		end
+
+		if args.include? 'max'
+			begin
+				max = Date.parse(args['max'])
+			rescue
+				max = Date.new(2009,12,31)
+			end
+		else
+			max = Date.new(2009,12,31)
+		end
+
+		self.random_date min, max
 	end
 
 	def self.generate_datetime args
@@ -87,6 +105,8 @@ module DataGenerator
 			rescue
 				min = Time.new(1950,1,1,0,0,0)
 			end
+		else
+			min = Time.new(1950,1,1,0,0,0)
 		end
 
 		if args.include? 'max'
@@ -95,6 +115,8 @@ module DataGenerator
 			rescue
 				max = Time.new(2009,12,31,23,59,59)
 			end
+		else
+			max = Time.new(2009,12,31,23,59,59)
 		end
 
 		self.random_time min, max
@@ -230,12 +252,18 @@ module DataGenerator
 		(min_length...max_length).map{65.+(rand(57)).chr}.join
 	end
 
-	def self.random_time min = 0.0, max = Time.now
+	# Generates random Time object within given range
+	# * min:: Time object
+	# * max:: Time object
+	def self.random_time min, max
 		Time.at(min + rand * (max.to_f - min.to_f))
 	end
 
-	def self.random_date from = 0.0, to = Time.now
-		Date.parse(self.random_time.to_s)
+	# Generates random Date object within given range
+	# * min:: Date object
+	# * max:: Date object
+	def self.random_date min, max
+		self.random_time(min.to_time, max.to_time).to_date
 	end
 
 	def self.random_pesel date = nil, sex = nil
@@ -246,6 +274,8 @@ module DataGenerator
 	end
 
 	# Calculates polish identification number - PESEL - using birth date and sex
+	# * date:: Date of birth, Date object
+	# * sex:: 'm' or 'f'
 	def self.calculate_pesel date, sex
 		weights			= [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
 		male_digits		= '13579'
