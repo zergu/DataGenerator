@@ -39,46 +39,31 @@ end.parse!
 ### Initial setup and load config file
 ###
 
+# Read config file
 config = YAML.load_file(options[:config_file] || 'config.yml')
-output_file = options[:output_file] || 'generated-data.sql'
-meta_data_objects = []
-data = {}
 
+# Translate config meta-data objects
+meta_data_objects = MetaDataObject.parse config
+
+# Setup output file
+output_file = options[:output_file] || 'generated-data.sql'
+
+# Check output file format
 if config['format'] != 'sql'
 	raise "Other formats than 'sql' not yet supported"
 end
 
-###
-### Read meta-data from parsed config
-###
-
-i = 0
-config['sets'].each { |set|
-	mdo				= MetaDataObject.new
-	mdo.set_name	= set[0]
-	mdo.attrs		= set[1]['_attributes']
-
-	j = 0
-	set[1].each { |line|
-		if line[0] != "_attributes"
-			mdo.fields << { line[0] => line[1] }
-			mdo.index_map[line[0]] = j
-			j +=1
-		end
-	}
-
-	meta_data_objects[i] = mdo
-	i += 1
-}
+# Initialize data container
+data = {}
 
 ###
-### Build an array with rows representing desired generated/randomizde data
+### Fill data container with rows representing desired generated/randomized data
 ###
 
 meta_data_objects.each { |mdo|
 	data[mdo.set_name] = []
 
-	for i in 0..mdo.attrs["count"]
+	for i in 0..mdo.attrs['count']
 		row = []
 		mdo.fields.each { |field|
 			field.each_pair { |field_name, field_attrs|

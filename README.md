@@ -53,7 +53,15 @@ Supported field types: generic
 
 *	**date**
 
-	Random date.
+	Optional: **min** (default: '1950-01-01')  
+	Optional: **max** (default: '2009-12-31')  
+	Random date from *min* — *max* range.
+
+*	**datetime**
+
+	Optional: **min** (default: '1950-01-01 00:00:00')  
+	Optional: **max** (default: '2009-12-31 23:59:59')  
+	Random datetime from *min* — *max* range.
 
 *	**entity**
 
@@ -63,8 +71,8 @@ Supported field types: generic
 
 *	**lorem**
 
-	Optional: min_sentences (default: 1)  
-	Optional: max_sentences (default: 20)  
+	Optional: **min_sentences** (default: 1)  
+	Optional: **max_sentences** (default: 20)  
 	Generates pseudo-text with random number of sentences from famous *Lorem Ipsum*.
 
 *	**distributed**

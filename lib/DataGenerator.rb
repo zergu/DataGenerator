@@ -46,7 +46,7 @@ module DataGenerator
 				return nil
 			end
 		end
-		min_length = (args.include?('min_length') && args['min_length'].is_a?(Integer)) ? args['min_length'] : 32
+		min_length = (args.include?('min_length') && args['min_length'].is_a?(Integer)) ? args['min_length'] : 1
 		max_length = (args.include?('max_length') && args['max_length'].is_a?(Integer)) ? args['max_length'] : 32
 		self.random_string(min_length, max_length)
 	end

@@ -14,5 +14,30 @@ class MetaDataObject
 
 		return field_names
 	end
+
+	def self.parse config
+		mdos = []
+		i = 0
+
+		config['sets'].each { |set|
+			mdo				= self.new
+			mdo.set_name	= set[0]
+			mdo.attrs		= set[1]['_attributes']
+
+			j = 0
+			set[1].each { |line|
+				if line[0] != "_attributes"
+					mdo.fields << { line[0] => line[1] }
+					mdo.index_map[line[0]] = j
+					j +=1
+				end
+			}
+
+			mdos[i] = mdo
+			i += 1
+		}
+
+		mdos
+	end
 end
 
