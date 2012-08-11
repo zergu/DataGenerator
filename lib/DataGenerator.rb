@@ -248,6 +248,9 @@ module DataGenerator
 
 	end
 
+	# Generates string from random chars
+	# * min_length:: Minimum string length
+	# * max_length:: Maximum string length
 	def self.random_string min_length, max_length
 		(min_length...max_length).map{65.+(rand(57)).chr}.join
 	end
