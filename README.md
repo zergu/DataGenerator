@@ -35,7 +35,7 @@ Example config file (YAML)
 	    visits:
 	        _attributes: { count: 350 }
 	        patient_id: { type: number, min: 2, max: 5 }
-	        description: { type: lorem, min_sentences: 2, max_sentences: 5 }
+	        description: { type: text, min_sentences: 2, max_sentences: 5 }
 
 Supported field types: generic
 ------------------------------
@@ -69,7 +69,7 @@ Supported field types: generic
 	Loads a random value from dictionary specified in *from* attribute. Check dictionaries
 	in *data/* dir.
 
-*	**lorem**
+*	**text**
 
 	Optional: **min_sentences** (default: 1)  
 	Optional: **max_sentences** (default: 20)  

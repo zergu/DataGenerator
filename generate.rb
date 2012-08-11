@@ -3,7 +3,8 @@
 require 'yaml'
 require 'optparse'
 require_relative 'lib/MetaDataObject'
-require_relative 'lib/DataGenerator'
+require_relative 'lib/Generate'
+require_relative 'lib/Randomize'
 
 ###
 ### Parse command line options
@@ -78,7 +79,7 @@ meta_data_objects.each { |mdo|
 					}
 				end
 
-				row.push DataGenerator.generate_value(field_attrs)
+				row.push Generate.value field_attrs
 			}
 		}
 		data[mdo.set_name].push row
