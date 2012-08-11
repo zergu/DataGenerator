@@ -9,7 +9,7 @@ module Randomize
 
 	# Generates random number (integer) from given range
 	def self.number min, max
-		min + rand(1 + max - min)
+		rand min..max
 	end
 
 	# Generates random Time object within given range
@@ -43,7 +43,7 @@ module Randomize
 		name	= []
 		domain	= []
 
-		rand(3..10).times { name << letters.sample }
+		rand(3..15).times { name << letters.sample }
 		rand(3..10).times { domain << letters.sample }
 
 		name.join + '@' + domain.join + '.' + tlds.sample
@@ -51,7 +51,7 @@ module Randomize
 
 	# Generates random phone number (NNN-NNN-NNN)
 	def self.phone_number
-		rand(100_000_000...999_999_999).to_s.scan(/.../).join('-')
+		rand(100_000_000..999_999_999).to_s.scan(/.../).join('-')
 	end
 
 	# Generates postal code
@@ -68,7 +68,7 @@ module Randomize
 	# Calculates polish identification number - PESEL - using birth date and sex
 	# * date:: Date of birth, Date object
 	# * sex:: 'm' or 'f'
-	def self.pesel date = nil, sex = nil
+	def self.pesel date, sex
 
 		weights			= [1, 3, 7, 9, 1, 3, 7, 9, 1, 3]
 		male_digits		= '13579'
