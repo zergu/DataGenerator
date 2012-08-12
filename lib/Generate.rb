@@ -97,7 +97,7 @@ module Generate
 			when 'pesel'
 
 				if args.include? 'fields_as_args'
-					Randomize.send :pesel, *args['args']
+					Randomize.send :pesel, args['args'][0], args['args'][1]
 				else
 					sex_letters = 'mf'
 					date	= Randomize.date if date === nil

@@ -5,6 +5,7 @@ require 'optparse'
 require_relative 'lib/MetaDataObject'
 require_relative 'lib/Generate'
 require_relative 'lib/Randomize'
+require_relative 'lib/Write'
 
 ###
 ### Parse command line options
@@ -90,43 +91,5 @@ meta_data_objects.each { |mdo|
 ### Write data to file in (Postgre)SQL format
 ###
 
-sql = ''
-meta_data_objects.each { |mdo|
-	sql += 'INSERT INTO ' + mdo.set_name + '(' + mdo.field_names.join(', ') + ') VALUES ' + "\n"
-	data[mdo.set_name].each { |row|
-		sql += "\t("
-		values = []
-		row.each { |value|
-			value = value.strftime('%Y-%m-%d %H:%M:%S') if value.instance_of? DateTime
-			value = value.strftime('%Y-%m-%d %H:%M:%S') if value.instance_of? Time
-			value = value.to_s if value.instance_of? Date
-
-			if value === true
-				value = 't'
-			elsif value === false
-				value = 'f'
-			end
-
-			if value.instance_of? Fixnum
-				values << value
-			elsif value === nil
-				values << 'NULL'
-			else
-				begin
-					# FIXME problem with \ as a last character
-					values << "'" + value + "'"
-				rescue TypeError
-					puts "Can't convert value to string: " + value.inspect
-				end
-			end
-		}
-		sql += values.join(', ') + "),\n"
-	}
-
-	# Replace comma after last row with ending semicolon
-	sql[-2] = ';'
-	sql += "\n\n"
-
-	File.open(output_file, 'w+') { |f| f.write(sql) }
-}
+Write.to_sql meta_data_objects, data, output_file
 
