@@ -116,6 +116,18 @@ Supported field types: specific
 
 	Random polish postal code matching XX-XXX, where X = 0..9.
 
+Global parameters available for all field types
+-----------------------------------------------
+
+*	**null_density** - number from 0..1 range indicating how often NULL should be returned instead of generated
+	value. If not defined all values will be generated. Example:  
+	`phone_number: { type: phone_number, null_density: 0.25 }`
+	means that about 75% of all records will have random phone number generated.
+
+*	**prefix** and **suffix** - use another value generator to add append or prepend to current value. Prefixes
+	and suffixes can be nested and work only with values castable to string. Example:  
+	`street: { type: entity, from: german_names, suffix: { type: fixed, value: 'straße ', suffix: { type: number, min: 1, max: 99 } } }
+
 Imagining the future
 --------------------
 

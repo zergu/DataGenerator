@@ -158,15 +158,15 @@ module Generate
 		end
 
 		# Global parameter for strings: prefix
-		if args.include? 'prefix' and v.is_a? String
+		if args.include? 'prefix' and v.respond_to? :to_s
 			prefix = self.value args['prefix']
-			v = prefix.to_s + v
+			v = prefix.to_s + v.to_s
 		end
 
 		# Global parameter for strings: suffix
-		if args.include? 'suffix' and v.is_a? String
+		if args.include? 'suffix' and v.respond_to? :to_s
 			suffix = self.value args['suffix']
-			v += suffix.to_s
+			v = v.to_s + suffix.to_s
 		end
 
 		return v
