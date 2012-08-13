@@ -2,6 +2,10 @@ format: sql
 sets:
     patients:
         _attributes: { count: 40 }
+        # Prefix test
+        street: { type: entity, from: streets_pl, prefix: { type: fixed, value: 'ul. ' } }
+        # Double suffix test
+        company_name: { type: string, min_length: 2, max_length: 6, suffix: { type: fixed, value: '!', suffix: { type: code, code: 'rand(7).times.collect { "1" }.join("")' } } }
         last_activity: { type: datetime, min: '2000-01-01 00:00:00', null_density: 0.1 }
         application_id: { type: fixed, value: 3 }
         firstname: { type: entity, from: first_names_pl }

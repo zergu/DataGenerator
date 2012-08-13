@@ -6,149 +6,181 @@ module Generate
 	# generator or loader.
 	def self.value args
 
+		# Type check
 		if not args.include? 'type'
 			raise 'Fatal. Found field without specified type: ' + args.inspect
 		end
 
+		# Global parameter: null density
 		if args.include? 'null_density'
 			if rand <= args['null_density']
 				return nil
 			end
 		end
 
+		# Dispatcher
 		case args['type']
 
-			when 'string'
+		when 'string'
 
-				min_length = (args.include?('min_length') && args['min_length'].is_a?(Integer)) ? args['min_length'] : 1
-				max_length = (args.include?('max_length') && args['max_length'].is_a?(Integer)) ? args['max_length'] : 32
-				Randomize.string min_length, max_length
+			min_length = (args.include?('min_length') && args['min_length'].is_a?(Integer)) ? args['min_length'] : 1
+			max_length = (args.include?('max_length') && args['max_length'].is_a?(Integer)) ? args['max_length'] : 32
+			v = Randomize.string min_length, max_length
 
-			when 'number'
+		when 'number'
 
-				min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 1
-				max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 999
-				Randomize.number min, max
+			min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 1
+			max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 999
+			v = Randomize.number min, max
 
-			when 'date'
+		when 'date'
 
-				if args.include? 'min'
-					begin
-						min = Date.parse(args['min'])
-					rescue
-						min = Date.new(1950,1,1)
-					end
-				else
+			if args.include? 'min'
+				begin
+					min = Date.parse(args['min'])
+				rescue
 					min = Date.new(1950,1,1)
 				end
+			else
+				min = Date.new(1950,1,1)
+			end
 
-				if args.include? 'max'
-					begin
-						max = Date.parse(args['max'])
-					rescue
-						max = Date.new(2009,12,31)
-					end
-				else
+			if args.include? 'max'
+				begin
+					max = Date.parse(args['max'])
+				rescue
 					max = Date.new(2009,12,31)
 				end
+			else
+				max = Date.new(2009,12,31)
+			end
 
-				Randomize.date min, max
+			v = Randomize.date min, max
 
-			when 'datetime'
+		when 'datetime'
 
-				if args.include? 'null_density'
-					if rand <= args['null_density']
-						return nil
-					end
+			if args.include? 'null_density'
+				if rand <= args['null_density']
+					return nil
 				end
+			end
 
-				if args.include? 'min'
-					begin
-						min = DateTime.parse(args['min']).to_time
-					rescue
-						min = Time.new(1950,1,1,0,0,0)
-					end
-				else
+			if args.include? 'min'
+				begin
+					min = DateTime.parse(args['min']).to_time
+				rescue
 					min = Time.new(1950,1,1,0,0,0)
 				end
+			else
+				min = Time.new(1950,1,1,0,0,0)
+			end
 
-				if args.include? 'max'
-					begin
-						max = DateTime.parse(args['max']).to_time
-					rescue
-						max = Time.new(2009,12,31,23,59,59)
-					end
-				else
+			if args.include? 'max'
+				begin
+					max = DateTime.parse(args['max']).to_time
+				rescue
 					max = Time.new(2009,12,31,23,59,59)
 				end
-
-				Randomize.time min, max
-
-			when 'text'
-
-				min_sentences = (args.include?('min_sentences') && args['min_sentences'].is_a?(Integer)) ? args['min_sentences'] : 1
-				max_sentences = (args.include?('max_sentences') && args['max_sentences'].is_a?(Integer)) ? args['max_sentences'] : 20
-				Randomize.text min_sentences, max_sentences
-
-			when 'email'
-
-				Randomize.email
-
-			when 'phone_number'
-
-				Randomize.phone_number
-
-			when 'pesel'
-
-				if args.include? 'fields_as_args'
-					Randomize.send :pesel, args['args'][0], args['args'][1]
-				else
-					sex_letters = 'mf'
-					date	= Randomize.date if date === nil
-					sex		= sex_letters.sample if sex === nil
-
-					Randomize.pesel date, sex
-				end
-
-			when 'postal_code'
-
-				country_code = (args.include? 'country_code') ? args['country_code'] : nil
-
-				Randomize.postal_code country_code
-
-			when 'distributed'
-
-				self.distributed_values args
-
-			when 'entity'
-
-				self.load_entity args
-
-			when 'fixed'
-
-				args['value']
-
-			when 'code'
-
-				eval args['code']
-
 			else
-				raise 'Unknown field type: ' + args['type']
+				max = Time.new(2009,12,31,23,59,59)
+			end
+
+			v = Randomize.time min, max
+
+		when 'text'
+
+			min_sentences = (args.include?('min_sentences') && args['min_sentences'].is_a?(Integer)) ? args['min_sentences'] : 1
+			max_sentences = (args.include?('max_sentences') && args['max_sentences'].is_a?(Integer)) ? args['max_sentences'] : 20
+			v = Randomize.text min_sentences, max_sentences
+
+		when 'email'
+
+			v = Randomize.email
+
+		when 'phone_number'
+
+			v = Randomize.phone_number
+
+		when 'pesel'
+
+			if args.include? 'fields_as_args'
+				v = Randomize.send :pesel, args['args'][0], args['args'][1]
+			else
+				sex_letters = 'mf'
+				date	= Randomize.date if date === nil
+				sex		= sex_letters.sample if sex === nil
+
+				v = Randomize.pesel date, sex
+			end
+
+		when 'postal_code'
+
+			country_code = (args.include? 'country_code') ? args['country_code'] : nil
+
+			v = Randomize.postal_code country_code
+
+		when 'distributed'
+
+			if not args.include? 'values'
+				raise "Data type 'distributed' requires 'values' attribute"
+			end
+
+			v = self.distributed_values args['values']
+
+		when 'entity'
+
+			if not args.include? 'from'
+				raise 'Entity type need a "from" attribute'
+			end
+
+			if args['from'] === nil or args['from' === '']
+				raise 'Entity "from" attribute must not be empty'
+			end
+
+			file_path = self::ENTITIES_DIR + File::SEPARATOR + args['from']
+
+			if not File.exists? file_path
+				raise 'Could not find entities file: ' + file_path
+			end
+
+			v = self.load_entity file_path
+
+		when 'fixed'
+
+			v = args['value']
+
+		when 'code'
+
+			v = eval args['code']
+
+		else
+			raise 'Unknown field type: ' + args['type']
 		end
+
+		# Global parameter for strings: prefix
+		if args.include? 'prefix' and v.is_a? String
+			prefix = self.value args['prefix']
+			v = prefix.to_s + v
+		end
+
+		# Global parameter for strings: suffix
+		if args.include? 'suffix' and v.is_a? String
+			suffix = self.value args['suffix']
+			v += suffix.to_s
+		end
+
+		return v
 	end
 
-	def self.distributed_values args
-		if not args.include? 'values'
-			raise "Data type 'distributed' requires 'values' attribute"
-		end
+	def self.distributed_values values
 
 		ratio_sum	= 0
 		i			= 0
 		ratio_steps	= []
 
-		args['values'].each { |set|
-			if set[1] > 1
-				raise "Ratio can't be higher than 1 (for value: " + set[0] + ")"
+		values.each { |set|
+			if (0..1).member? set[1]
+				raise "Ratio must be from 0-1 range (for value: " + set[0] + ")."
 			else
 				ratio_sum += set[1]
 				if i === 0
@@ -174,30 +206,10 @@ module Generate
 	end
 
 	# Loads a single value from specified data source (file)
-	def self.load_entity args
+	def self.load_entity file_path
 
-		if not args.include? 'from'
-			raise 'Entity type need a "from" attribute'
-		end
-
-		if args['from'] === nil or args['from' === '']
-			raise 'Entity "from" attribute must not be empty'
-		end
-
-		file_path = self::ENTITIES_DIR + File::SEPARATOR + args['from']
-
-		if File.exists? file_path
-			entities = IO.read(file_path).split("\n")
-		else
-			raise 'Could not find entities file: ' + file_path
-		end
-
-		if args.include? 'suffix'
-			suffix = self.value args['suffix']
-			entities[rand(entities.length)] + suffix.to_s
-		else
-			entities[rand(entities.length)]
-		end
+		entities = IO.read(file_path).split("\n")
+		entities[rand(entities.length)]
 
 	end
 end
