@@ -112,9 +112,12 @@ Supported field types: specific
 	Generates random email matching pattern X@X.TLD, where X = where X is random string (3…10 chars)
 	and TLD is one of few top-level domains.
 
-*	**pl_postal_code**
-
-	Random polish postal code matching XX-XXX, where X = 0..9.
+*	**postal_code**
+	
+	Optional: **country_code**
+	Random postal code matching XXXXX, where X = 0..9.  
+	Supported country codes:  
+	* PL: XX-XXX
 
 Global parameters available for all field types
 -----------------------------------------------
@@ -126,7 +129,7 @@ Global parameters available for all field types
 
 *	**prefix** and **suffix** - use another value generator to add append or prepend to current value. Prefixes
 	and suffixes can be nested and work only with values castable to string. Example:  
-	`street: { type: entity, from: german_names, suffix: { type: fixed, value: 'straße ', suffix: { type: number, min: 1, max: 99 } } }
+	`street: { type: entity, from: german_names, suffix: { type: fixed, value: 'straße ', suffix: { type: number, min: 1, max: 99 } } }`
 
 Imagining the future
 --------------------
