@@ -6,6 +6,10 @@ module Generate
 	# generator or loader.
 	def self.value args
 
+		if not args.include? 'type'
+			raise 'Fatal. Found field without specified type: ' + args.inspect
+		end
+
 		if args.include? 'null_density'
 			if rand <= args['null_density']
 				return nil
@@ -174,6 +178,10 @@ module Generate
 
 		if not args.include? 'from'
 			raise 'Entity type need a "from" attribute'
+		end
+
+		if args['from'] === nil or args['from' === '']
+			raise 'Entity "from" attribute must not be empty'
 		end
 
 		file_path = self::ENTITIES_DIR + File::SEPARATOR + args['from']

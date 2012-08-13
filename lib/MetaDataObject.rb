@@ -19,23 +19,27 @@ class MetaDataObject
 		mdos = []
 		i = 0
 
-		config['sets'].each { |set|
-			mdo				= self.new
-			mdo.set_name	= set[0]
-			mdo.attrs		= set[1]['_attributes']
+		if config['sets']
+			config['sets'].each { |set|
+				mdo				= self.new
+				mdo.set_name	= set[0]
+				mdo.attrs		= set[1]['_attributes']
 
-			j = 0
-			set[1].each { |line|
-				if line[0] != "_attributes"
-					mdo.fields << { line[0] => line[1] }
-					mdo.index_map[line[0]] = j
-					j +=1
-				end
+				j = 0
+				set[1].each { |line|
+					if line[0] != "_attributes"
+						mdo.fields << { line[0] => line[1] }
+						mdo.index_map[line[0]] = j
+						j +=1
+					end
+				}
+
+				mdos[i] = mdo
+				i += 1
 			}
-
-			mdos[i] = mdo
-			i += 1
-		}
+		else
+			raise 'Could not find any sets. Nothing to do. Is your config properly formatted?'
+		end
 
 		mdos
 	end
