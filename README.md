@@ -141,8 +141,8 @@ Global parameters available for all field types
 	means that about 75% of all records will have random phone number generated.
 
 *	**prefix** and **suffix** - use another value generator to add append or prepend to current value. Prefixes
-	and suffixes can be nested and work only with values castable to string. Example:  
-	`street: { type: entity, from: german_names, suffix: { type: fixed, value: 'straße ', suffix: { type: number, min: 1, max: 99 } } }`
+	and suffixes can be nested and work only with values castable to string. Example: `street: { type: entity, from: ger_names,
+	suffix: { type: fixed, value: 'straße ', suffix: { type: number, max: 99 } } }`
 
 Imagining the future
 --------------------
