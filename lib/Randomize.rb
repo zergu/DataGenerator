@@ -7,6 +7,25 @@ module Randomize
 		(min_length...max_length).map{65.+(rand(57)).chr}.join
 	end
 
+	def self.word
+		vovels		= 'aeiouy'
+		consonants	= 'bcdfghjklmnpqrstvwz'
+		word		= []
+		switch		= true
+
+		rand(3..12).times.collect do |x|
+			if switch
+				word << vovels[rand(vovels.length)]
+			else
+				word << consonants[rand(consonants.length)]
+			end
+
+			switch = !switch
+		end
+
+		word.join('')
+	end
+
 	# Generates random number (integer) from given range
 	def self.number min, max
 		rand min..max

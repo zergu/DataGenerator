@@ -80,6 +80,11 @@ meta_data_objects.each { |mdo|
 					}
 				end
 
+				# Special handling of 'duplicate' type
+				if field_attrs['type'] === 'duplicate'
+					field_attrs['duplicate_value'] = row[mdo.index_map[field_attrs['field']]] if mdo.index_map.key? field_attrs['field']
+				end
+
 				field_attrs['set_name']		= mdo.set_name
 				field_attrs['field_name']	= field_name
 

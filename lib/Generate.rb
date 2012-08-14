@@ -28,6 +28,10 @@ module Generate
 			max_length = (args.include?('max_length') && args['max_length'].is_a?(Integer)) ? args['max_length'] : 32
 			v = Randomize.string min_length, max_length
 
+		when 'word'
+
+			v = Randomize.word
+
 		when 'number'
 
 			min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 1
@@ -106,6 +110,14 @@ module Generate
 			min_sentences = (args.include?('min_sentences') && args['min_sentences'].is_a?(Integer)) ? args['min_sentences'] : 1
 			max_sentences = (args.include?('max_sentences') && args['max_sentences'].is_a?(Integer)) ? args['max_sentences'] : 20
 			v = Randomize.text min_sentences, max_sentences
+
+		when 'duplicate'
+
+			if not args.include? 'duplicate_value'
+				raise 'Value from "duplicate" field could not be tanken. Pleas recheck your config'
+			end
+
+			v = args['duplicate_value']
 
 		when 'email'
 
