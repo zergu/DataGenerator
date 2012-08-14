@@ -80,6 +80,9 @@ meta_data_objects.each { |mdo|
 					}
 				end
 
+				field_attrs['set_name']		= mdo.set_name
+				field_attrs['field_name']	= field_name
+
 				row.push Generate.value field_attrs
 			}
 		}

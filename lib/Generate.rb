@@ -1,6 +1,7 @@
 module Generate
 
 	ENTITIES_DIR = 'data'
+	@@serials = {}
 
 	# Dispatcher. Based on given attributes form config file invokes specific
 	# generator or loader.
@@ -32,6 +33,19 @@ module Generate
 			min = (args.include?('min') && args['min'].is_a?(Integer)) ? args['min'] : 1
 			max = (args.include?('max') && args['max'].is_a?(Integer)) ? args['max'] : 999
 			v = Randomize.number min, max
+
+		when 'serial'
+
+			start		= (args.include?('start') && args['start'].is_a?(Integer)) ? args['start'] : 1
+			seq_name	= args['set_name'] + '_' + args['field_name'] + '_seq'
+
+			if self.serials.include? seq_name
+				self.serials[seq_name] += 1
+			else
+				self.serials[seq_name] = start
+			end
+
+			v = self.serials[seq_name]
 
 		when 'date'
 
@@ -179,8 +193,8 @@ module Generate
 		ratio_steps	= []
 
 		values.each { |set|
-			if (0..1).member? set[1]
-				raise "Ratio must be from 0-1 range (for value: " + set[0] + ")."
+			if not (0..1).member? set[1]
+				raise "Ratio must be from 0-1 range (for value: " + set[0].to_s + ")."
 			else
 				ratio_sum += set[1]
 				if i === 0
@@ -211,6 +225,14 @@ module Generate
 		entities = IO.read(file_path).split("\n")
 		entities[rand(entities.length)]
 
+	end
+
+	def self.serials
+		@@serials
+	end
+
+	def self.serials= v
+		@@serials = v
 	end
 end
 
