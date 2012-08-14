@@ -7,6 +7,7 @@ module Randomize
 		(min_length...max_length).map{65.+(rand(57)).chr}.join
 	end
 
+	# Generates random (quite pronounceable) word
 	def self.word
 		vovels		= 'aeiouy'
 		consonants	= 'bcdfghjklmnpqrstvwz'
@@ -24,6 +25,25 @@ module Randomize
 		end
 
 		word.join('')
+	end
+
+	# Generates random words with possible modifications
+	# * min:: Minimum number of words
+	# * max:: Maximum number of words
+	# * sanitize_for_url:: Replace characters unwanted in url if true
+	# * capitalize_words:: Possible values: :first, :all, false
+	def self.words min, max, capitalize_words = false, sanitize_for_url = false
+		words = []
+		(min..max).times.collect do |x|
+			words << self.word
+		end
+
+		words.map! { |x| x.capitalize } if capitalize_words === :all
+
+		words.join!(' ')
+
+		words.capitalize! if capitalize_words === :first
+		words.gsub!(/ /, '-') if sanitize_for_url
 	end
 
 	# Generates random number (integer) from given range

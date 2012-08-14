@@ -92,7 +92,7 @@ Supported field types: generic
 
 *	**distributed**
 
-	Required: values (Array of Arrays)  
+	Required: **values** (Array of Arrays)  
 	Randomizes fixed values using their weights. Example values can look like this:  
 	`[ ['ruby', 0.2], ['php', 0.4], ['python', 0.25], ['c++', 0.14], ['java', 0.01] ]`
 	Meaning that you have 20% chance to get 'ruby' value, 40% for 'php' and so on. This
@@ -141,7 +141,7 @@ Global parameters available for all field types
 	means that about 75% of all records will have random phone number generated.
 
 *	**prefix** and **suffix** - use another value generator to add append or prepend to current value. Prefixes
-	and suffixes can be nested and work only with values castable to string. Example: `street: { type: entity, from: ger_names,
+	and suffixes can be nested and work only with values castable to string. Example: `street: { type: entity, from: names_de,
 	suffix: { type: fixed, value: 'straße ', suffix: { type: number, max: 99 } } }`
 
 Imagining the future
