@@ -13,7 +13,7 @@ module Randomize
 		word		= []
 		switch		= true
 
-		rand(3..12).times.collect do |x|
+		rand(4..14).times.collect do |x|
 			if switch
 				word << vovels[rand(vovels.length)]
 			else
@@ -57,15 +57,8 @@ module Randomize
 	# Generates random email addres
 	def self.email
 		tlds = ['com', 'org', 'net', 'biz', 'co.uk', 'pl', 'it', 'jp', 'tv', 'us', 'au' ]
-		letters = ('a'..'z').to_a
 
-		name	= []
-		domain	= []
-
-		rand(3..15).times { name << letters.sample }
-		rand(3..10).times { domain << letters.sample }
-
-		name.join + '@' + domain.join + '.' + tlds.sample
+		self.word + '@' + self.word + '.' + tlds.sample
 	end
 
 	# Generates random phone number (NNN-NNN-NNN)
