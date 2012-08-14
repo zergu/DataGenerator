@@ -51,6 +51,11 @@ Supported field types: generic
 	Optional: **max** (default: 999)  
 	Random number from *min* — *max* range.
 
+*	**serial**
+
+	Optional: **start** (default: 1)  
+	Generates successive numbers.
+
 *	**date**
 
 	Optional: **min** (default: '1950-01-01')  
@@ -74,6 +79,16 @@ Supported field types: generic
 	Optional: **min_sentences** (default: 1)  
 	Optional: **max_sentences** (default: 20)  
 	Generates pseudo-text with random number of sentences from famous *Lorem Ipsum*.
+
+*	**word**
+
+	Generates random word (4-14 letters). Small letters only, consonants and vowels alternately.
+
+*	**duplicate**
+
+	Required: **field**  
+	Copies value from already generated field. This by itself does not seem very useful, but
+	remember you can combine it with some prefixes and suffixes.
 
 *	**distributed**
 
@@ -103,12 +118,10 @@ Supported field types: specific
 
 *	**phone_number**
 
-	Optional: **null_density** (0..1)  
 	Generates random phone number matching pattern XXX-XXX-XXX, where X = 0..9.
 
 *	**email**
 
-	Optional: **null_density** (0..1)  
 	Generates random email matching pattern X@X.TLD, where X = where X is random string (3…10 chars)
 	and TLD is one of few top-level domains.
 
