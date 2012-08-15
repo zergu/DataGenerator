@@ -34,16 +34,18 @@ module Randomize
 	# * capitalize_words:: Possible values: :first, :all, false
 	def self.words min, max, capitalize_words = false, sanitize_for_url = false
 		words = []
-		(min..max).times.collect do |x|
+		rand(min..max).times.collect do |x|
 			words << self.word
 		end
 
 		words.map! { |x| x.capitalize } if capitalize_words === :all
 
-		words.join!(' ')
+		words = words.join(' ')
 
 		words.capitalize! if capitalize_words === :first
 		words.gsub!(/ /, '-') if sanitize_for_url
+
+		words
 	end
 
 	# Generates random number (integer) from given range

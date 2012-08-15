@@ -41,4 +41,25 @@ class TestRandomize < Test::Unit::TestCase
 		}
 	end
 
+	def test_words
+		(0..9999).each {
+			words = Randomize.words 1, 4
+			assert_instance_of String, words
+			assert_match /^[a-z][ a-z]*[a-z]$/, words
+			assert_no_match /[0-9]+/, words
+		}
+
+		(0..9999).each {
+			words = Randomize.words 1, 3, :first
+			assert_instance_of String, words
+			assert_match /^[A-Z].*[a-z]$/, words
+		}
+
+		(0..9999).each {
+			words = Randomize.words 1, 3, false, true
+			assert_instance_of String, words
+			assert_match /^[a-z][-a-z]*[a-z]$/, words
+			assert_no_match /\ /, words
+		}
+	end
 end
