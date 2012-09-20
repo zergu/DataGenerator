@@ -77,25 +77,8 @@ module Generate
 
 		when 'datetime'
 
-			if args.include? 'min'
-				begin
-					min = DateTime.parse(args['min']).to_time
-				rescue
-					min = Time.new(1950,1,1,0,0,0)
-				end
-			else
-				min = Time.new(1950,1,1,0,0,0)
-			end
-
-			if args.include? 'max'
-				begin
-					max = DateTime.parse(args['max']).to_time
-				rescue
-					max = Time.new(2009,12,31,23,59,59)
-				end
-			else
-				max = Time.new(2009,12,31,23,59,59)
-			end
+			min = DateTime.parse(args['min'] || raise).to_time rescue Time.new(1950, 1, 1, 0, 0, 0)
+			max = DateTime.parse(args['max'] || raise).to_time rescue Time.new(2009, 12, 31, 23, 59, 59)
 
 			v = Randomize.time min, max
 

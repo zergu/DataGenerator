@@ -84,14 +84,28 @@ module Randomize
 	end
 
 	# Generates random time of the day in 24h format
-	def self.time_of_day quantifier = 1
+	def self.time_of_day min = nil, max = nil, quantifier = 1
 		# Skip bad quantifiers
 		quantifier = 1 unless [0, 1, 2, 3, 5, 10, 12, 15, 20, 30].include? quantifier
 
-		h = "%02d" % (rand 0..23)
+		# Defaultize params
+		min = '00:00' if min.nil?
+		max = '23:59' if max.nil?
+
+		# Calculate min and max as integer
+		min_h, min_m = min.split ':'
+		max_h, max_m = max.split ':'
+		min = min_h.to_i * 60 + min_m.to_i
+		max = max_h.to_i * 60 + max_m.to_i
+
+		# Randomize "integer time"
+		time = rand(min..max)
+
+		# Covert integer to time of the day
+		h = "%02d" % (time / 60).to_s
 
 		if quantifier > 0
-			m = rand (0..59)
+			m = time % 60
 			m = "%02d" % (m - m % quantifier)
 		else
 			m = '00'
