@@ -77,12 +77,6 @@ module Generate
 
 		when 'datetime'
 
-			if args.include? 'null_density'
-				if rand <= args['null_density']
-					return nil
-				end
-			end
-
 			if args.include? 'min'
 				begin
 					min = DateTime.parse(args['min']).to_time
@@ -101,6 +95,30 @@ module Generate
 				end
 			else
 				max = Time.new(2009,12,31,23,59,59)
+			end
+
+			v = Randomize.time min, max
+
+		when 'date_and_time'
+
+			if args.include? 'min_date'
+				begin
+					min_date = DateTime.parse(args['min_date']).to_time
+				rescue
+					min_date = Time.new(1950,1,1,0,0,0)
+				end
+			else
+				min_date = Time.new(1950,1,1,0,0,0)
+			end
+
+			if args.include? 'max_date'
+				begin
+					max_date = DateTime.parse(args['max_date']).to_time
+				rescue
+					max_date = Time.new(2009,12,31,23,59,59)
+				end
+			else
+				max_date = Time.new(2009,12,31,23,59,59)
 			end
 
 			v = Randomize.time min, max

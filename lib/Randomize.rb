@@ -83,6 +83,23 @@ module Randomize
 		self.word + '@' + self.word + '.' + tlds.sample
 	end
 
+	# Generates random time of the day in 24h format
+	def self.time_of_day quantifier = 1
+		# Skip bad quantifiers
+		quantifier = 1 unless [0, 1, 2, 3, 5, 10, 12, 15, 20, 30].include? quantifier
+
+		h = "%02d" % (rand 0..23)
+
+		if quantifier > 0
+			m = rand (0..59)
+			m = "%02d" % (m - m % quantifier)
+		else
+			m = '00'
+		end
+
+		h.to_s + ':' + m.to_s
+	end
+
 	# Generates random phone number (NNN-NNN-NNN)
 	def self.phone_number
 		rand(100_000_000..999_999_999).to_s.scan(/.../).join('-')
