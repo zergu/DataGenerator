@@ -24,8 +24,8 @@ Example config file (YAML)
 	    patients:
 	        _attributes: { count: 200 }
 	        application_id: { type: fixed, value: 3 }
-	        name1: { type: entity, from: first_names_pl }
-	        lastname1: { type: entity, from: last_names_pl }
+	        name: { type: entity, from: first_names_pl }
+	        lastname: { type: entity, from: last_names_pl }
 	        birthday_at: { type: date, min: 1900-01-01, max: 2006-12-31 }
 	        pesel: { type: pesel, fields_as_args: [birthday_at] }
 	        country: { type: entity, from: countries_pl }
@@ -147,7 +147,7 @@ Global parameters available for all field types
 Imagining the future
 --------------------
 
-* Writing also to CSV.
+* Writing also to CSV and YAML.
 * Support for auto-increment fields and SQL COPY format.
 * More specific generators.
 * Much more dictionaries.

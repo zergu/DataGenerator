@@ -77,34 +77,24 @@ module Generate
 
 		when 'datetime'
 
-			min = DateTime.parse(args['min'] || raise).to_time rescue Time.new(1950, 1, 1, 0, 0, 0)
-			max = DateTime.parse(args['max'] || raise).to_time rescue Time.new(2009, 12, 31, 23, 59, 59)
+			if args.include? 'diff_from_value'
+				v = DateTime.parse(args['diff_from_value']).to_time.getutc + args['diff_by_seconds'].to_i
+			else
+				min = DateTime.parse(args['min'] || raise).to_time rescue Time.new(1950, 1, 1, 0, 0, 0)
+				max = DateTime.parse(args['max'] || raise).to_time rescue Time.new(2009, 12, 31, 23, 59, 59)
 
-			v = Randomize.time min, max
+				v = Randomize.time min, max
+			end
 
 		when 'date_and_time'
 
-			if args.include? 'min_date'
-				begin
-					min_date = DateTime.parse(args['min_date']).to_time
-				rescue
-					min_date = Time.new(1950,1,1,0,0,0)
-				end
-			else
-				min_date = Time.new(1950,1,1,0,0,0)
-			end
+			min_date = DateTime.parse(args['min_date'] || raise).to_time rescue Time.new(1950, 1, 1, 0, 0, 0)
+			max_date = DateTime.parse(args['max_date'] || raise).to_time rescue Time.new(2009, 12, 31, 23, 59, 59)
 
-			if args.include? 'max_date'
-				begin
-					max_date = DateTime.parse(args['max_date']).to_time
-				rescue
-					max_date = Time.new(2009,12,31,23,59,59)
-				end
-			else
-				max_date = Time.new(2009,12,31,23,59,59)
-			end
+			time = Randomize.time_of_day args['min_time'], args['max_time'], args['minute_quantifier']
+			date = Randomize.date min_date, max_date
 
-			v = Randomize.time min, max
+			v = date.to_s + ' ' + time.to_s + ':00'
 
 		when 'text'
 
@@ -115,7 +105,7 @@ module Generate
 		when 'duplicate'
 
 			if not args.include? 'duplicate_value'
-				raise 'Value from "duplicate" field could not be tanken. Pleas recheck your config'
+				raise 'Value from "duplicate" field could not be taken. Pleas recheck your config'
 			end
 
 			v = args['duplicate_value']
