@@ -20,7 +20,7 @@ optparse = OptionParser.new do |opts|
 
 	# Define the options, and what they do
 	options[:output_file] = nil
-	opts.on( '-f', '--file FILE', 'Use different output file than ./generated-data.sql' ) do |file|
+	opts.on( '-f', '--file FILE', 'Use different output file than ./generated-data.$ext' ) do |file|
 		options[:output_file] = file
 	end
 
@@ -48,10 +48,10 @@ config = YAML.load_file(options[:config_file] || 'config.yml')
 meta_data_objects = MetaDataObject.parse config
 
 # Setup output file
-output_file = options[:output_file] || 'generated-data.sql'
+output_file = options[:output_file] || 'generated-data.' + config['format']
 
 # Check output file format
-if config['format'] != 'sql'
+if not ['sql', 'yml'].include? config['format']
 	raise "Other formats than 'sql' not yet supported"
 end
 
@@ -104,5 +104,10 @@ meta_data_objects.each { |mdo|
 ### Write data to file in (Postgre)SQL format
 ###
 
-Write.to_sql meta_data_objects, data, output_file
+case config['format']
+	when 'yml'
+		Write.to_yml meta_data_objects, data, output_file
+	else
+		Write.to_sql meta_data_objects, data, output_file
+end
 

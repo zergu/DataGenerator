@@ -1,6 +1,6 @@
 *.swp
-generated-data.sql
+generated-data.*
 gen
-config_med.yml
+config_*.yml
 pesel.rb
 

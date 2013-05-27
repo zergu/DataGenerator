@@ -45,4 +45,49 @@ module Write
 		}
 	end
 
+	def self.to_yml meta_data_objects, data, output_file
+		yml	= ''
+		i	= 1
+
+		meta_data_objects.each { |mdo|
+			yml += '#------------------------------------------------------------' + "\n"
+			yml += '#--- ' + mdo.set_name + "\n"
+			yml += '#------------------------------------------------------------' + "\n\n"
+
+			yml += mdo.set_name + ":\n"
+			data[mdo.set_name].each { |row|
+				yml += '  i' + "%05d" % i + ":\n"
+
+				mdo.field_names.zip(row).each do |field, value|
+					yml += "    "
+					value = value.strftime('%Y-%m-%d %H:%M:%S') if value.instance_of? DateTime
+					value = value.strftime('%Y-%m-%d %H:%M:%S') if value.instance_of? Time
+					value = value.to_s if value.instance_of? Date
+
+					if value === true
+						value = 't'
+					elsif value === false
+						value = 'f'
+					end
+
+					if value === nil
+						value = 'NULL'
+					end
+
+					if value.instance_of? Fixnum
+						value = value.to_s
+					end
+
+					yml += field + ': ' + value + "\n"
+
+				end
+
+				i += 1
+			}
+
+			yml += "\n\n"
+
+			File.open(output_file, 'w+') { |f| f.write(yml) }
+		}
+	end
 end
