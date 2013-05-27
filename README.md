@@ -23,14 +23,14 @@ Example config file (YAML)
 	sets:
 	    patients:
 	        _attributes: { count: 200 }
-	        application_id: { type: fixed, value: 3 }
 	        name: { type: entity, from: first_names_pl }
 	        lastname: { type: entity, from: last_names_pl }
 	        birthday_at: { type: date, min: 1900-01-01, max: 2006-12-31 }
 	        pesel: { type: pesel, fields_as_args: [birthday_at] }
 	        country: { type: entity, from: countries_pl }
 	        gender_id: { type: number, min: 1, max: 2 }
-	        active: { type: fixed, value: true }
+	        is_active: { type: distributed, values: [ [true, 0.95], [false, 0.05] ] }
+	        is_deleted: { type: fixed, value: true }
 	        created_at: { type: code, code: 'DateTime.now()' }
 	    visits:
 	        _attributes: { count: 350 }
@@ -147,10 +147,11 @@ Global parameters available for all field types
 Imagining the future
 --------------------
 
-* Writing also to CSV and YAML.
+* More user friendly error handling.
+* Writing also to CSV.
 * Support for auto-increment fields and SQL COPY format.
 * More specific generators.
-* Much more dictionaries.
+* Much more dictionaries (and better organized).
 * Constant code refactorization (to improve my Ruby skills).
 * Code unit tested.
 * All issues closed.
