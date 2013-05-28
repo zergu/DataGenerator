@@ -1,7 +1,8 @@
 DataGenerator
 =============
 
-Generates ready for insertion SQL file with various (calculated or randomized) data.
+Generates ready for insertion SQL (or YAML) file with various data like random word, date, sentences
+phrase from specific dictionary as defined in config file. Ruby is needed.
 
 How to use it?
 --------------

@@ -58,6 +58,9 @@ end
 # Initialize data container
 data = {}
 
+# Initialize serial (sequence) container
+$serials = {}
+
 ###
 ### Fill data container with rows representing desired generated/randomized data
 ###
@@ -65,7 +68,7 @@ data = {}
 meta_data_objects.each { |mdo|
 	data[mdo.set_name] = []
 
-	for i in 0..mdo.attrs['count']
+	for i in 1..mdo.attrs['count']
 		row = []
 		mdo.fields.each { |field|
 			field.each_pair { |field_name, field_attrs|
@@ -85,16 +88,47 @@ meta_data_objects.each { |mdo|
 					field_attrs['diff_from_value'] = row[mdo.index_map[field_attrs['diff_from']]] if mdo.index_map.key? field_attrs['diff_from']
 				end
 
-				# Special handling of 'duplicate' type
+				# Special handling of 'duplicate' type cause it needs to access other field value
 				if field_attrs['type'] === 'duplicate'
 					field_attrs['duplicate_value'] = row[mdo.index_map[field_attrs['field']]] if mdo.index_map.key? field_attrs['field']
+				end
+
+				# Special handling of 'relational' type type cause it needs to access other field value
+				if field_attrs['type'] === 'relational'
+					rel_name = field_attrs['relation_table']+'.'+field_attrs['relation_field']
+
+					if not defined? $serials[rel_name] or $serials[rel_name].nil?
+						raise 'Unknown table defined relation: ' + rel_name
+					end
+
+					if field_attrs['relation_type'] === '1-1'
+						copy = $serials[rel_name].shift
+						field_attrs['relational_value'] = copy
+						$serials[rel_name].push copy
+					elsif field_attrs['relation_type'] === 'random'
+						field_attrs['relational_value'] = $serials[rel_name].sample
+					else
+						raise 'Unkown relation type for ' + mdo.set_name + '.' + field_name
+					end
 				end
 
 				field_attrs['set_name']		= mdo.set_name
 				field_attrs['field_name']	= field_name
 
-				row.push Generate.value field_attrs
+				value = Generate.value field_attrs
+
+				# Remember all serial values for further use
+				if field_attrs['type'] === 'serial'
+					if ($serials[mdo.set_name+'.'+field_name]) === nil
+						$serials[mdo.set_name+'.'+field_name] = []
+					end
+					$serials[mdo.set_name+'.'+field_name].push value
+				end
+
+				row.push value
 			}
+
+
 		}
 		data[mdo.set_name].push row
 	end

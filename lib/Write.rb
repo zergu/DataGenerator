@@ -47,7 +47,6 @@ module Write
 
 	def self.to_yml meta_data_objects, data, output_file
 		yml	= ''
-		i	= 1
 
 		meta_data_objects.each { |mdo|
 			yml += '#------------------------------------------------------------' + "\n"
@@ -55,8 +54,10 @@ module Write
 			yml += '#------------------------------------------------------------' + "\n\n"
 
 			yml += mdo.set_name + ":\n"
+
+			i = 1
 			data[mdo.set_name].each { |row|
-				yml += '  i' + "%05d" % i + ":\n"
+				yml += '  ' + mdo.set_name.downcase + "%05d" % i + ":\n"
 
 				mdo.field_names.zip(row).each do |field, value|
 					yml += "    "

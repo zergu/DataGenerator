@@ -51,6 +51,14 @@ module Generate
 
 			v = self.serials[seq_name]
 
+		when 'relational'
+
+			if not args.include? 'relational_value'
+				raise 'Value from "relational" field could not be taken. Pleas recheck your config'
+			end
+
+			v = args['relational_value']
+
 		when 'date'
 
 			if args.include? 'min'
